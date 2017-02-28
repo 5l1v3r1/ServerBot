@@ -32,6 +32,7 @@ while(1)
         Send-MailMessage -To "recipient1@domain.com" -Cc "recipient2@domain.com" -SmtpServer "smtp.office365.com" -Credential $mycreds -UseSsl "Serverbot is running :)" -Port "587" -Body "The script is still running" -From $username -BodyAsHtml
     }
     # Get the website and statuscode, then look at the content to ensure the word you want to see is in it ("Generous" is the one I used most recently)
+    #    TUNE THIS IF YOUR SITE IS SLOWER THAN THAT - Default timeout is 60 seconds, or 1 minute, which should be good enough for most sites.  
     $webrequest = (Invoke-WebRequest -URI "https://monitoredserver.com" -UseBasicParsing -TimeoutSec 60)
     write-host $a
     $content = $webrequest.content
