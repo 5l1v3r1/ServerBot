@@ -49,6 +49,18 @@ while(1)
         }
     }
 
+    # If the script cannot download the page and find a word you want to see, email support or do nothing if flag is set
+    #    Was previously using statuscode for this functionality, but realized that the site could be up but the service unavailable, like in a DoS situation, or a crashed process
+    elseif (!$webrequest) {
+        if ($emailsent -ne 'True') {
+            Send-MailMessage -To "recipient1@domain.com" -Cc "recipient2@domain.com","recipient3@domain.com" -SmtpServer "smtp.office365.com" -Credential $mycreds -UseSsl "Server is DOWN!" -Port "587" -Body "This is an automatically generated message.<br>Please check on the status of your server, as it appears to be down currently.<br> You may need to reboot the service and/or server to get it back up and running.<br>Best regards<br><b>Your Server Support Bot</b>" -From $username -BodyAsHtml
+            $emailsent = 'True'
+        }
+        else {
+            write-host "Email has been sent to support!"
+        }
+    }
+
     # If you can see the content from $siteup, then you have to be getting a 200 status, and all is working.
     #    When this runs, reset $emailsent to False to ensure the next time the site is down, it will work properly
     else {
